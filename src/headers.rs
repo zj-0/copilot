@@ -25,7 +25,7 @@ macro_rules ! headers {
         {
             let mut headers = HeaderMap::new();
             $(
-                headers.insert($name, reqwest::header::HeaderValue::from_str(&$value).unwrap());
+                headers.insert($name, reqwest::header::HeaderValue::from_str($value.trim()).unwrap());
             )*
             headers
         }
@@ -58,7 +58,7 @@ pub(crate) struct GithubUserHeaders<'a> {
 impl<'a> Headers for GithubUserHeaders<'a> {
     fn to_headers(&self) -> HeaderMap {
         headers! {
-            "Authorization" => format!("{} {}", self.token_type, self.token),
+            "Authorization" => format!("{} {}", self.token_type, self.token).as_str(),
             "User-Agent" => "GithubCopilot/1.133.0",
             "Accept" => "application/json"
         }
@@ -72,7 +72,7 @@ pub(crate) struct GithubInternalHeaders<'a> {
 impl<'a> Headers for GithubInternalHeaders<'a> {
     fn to_headers(&self) -> HeaderMap {
         headers! {
-            "Authorization" => format!("token {}", self.token),
+            "Authorization" => format!("token {}", self.token).as_str(),
             "user-agent" => "GitHubCopilotChat/0.12.2023120701",
             "editor-version" => "vscode/1.85.1",
             "editor-plugin-version" => "copilot-chat/0.12.2023120701"
@@ -89,7 +89,7 @@ pub(crate) struct CopilotCompletionHeaders<'a> {
 impl<'a> Headers for CopilotCompletionHeaders<'a> {
     fn to_headers(&self) -> HeaderMap {
         headers! {
-            "Authorization" => format!("Bearer {}", self.token),
+            "Authorization" => format!("Bearer {}", self.token).as_str(),
             "vscode-sessionid" => self.vscode_sid,
             "machineid" => self.device_id,
             "editor-version" => "vscode/1.85.1",

@@ -53,7 +53,7 @@ pub struct GithubUserData {
     pub location: String,
     pub email: Option<String>,
     pub hireable: Option<bool>,
-    pub bio: String,
+    pub bio: Option<String>,
     pub twitter_username: Option<String>,
     pub public_repos: u64,
     pub public_gists: u64,
@@ -72,7 +72,7 @@ pub struct GithubCopilotAuth {
     pub copilot_ide_agent_chat_gpt4_small_prompt: bool,
     pub copilotignore_enabled: bool,
     pub expires_at: u64,
-    pub intellij_editor_fetcher: bool,
+    // pub intellij_editor_fetcher: bool,
     pub prompt_8k: bool,
     pub public_suggestions: String,
     pub refresh_in: u64,
@@ -82,7 +82,7 @@ pub struct GithubCopilotAuth {
     pub token: String,
     pub tracking_id: String,
     pub vsc_electron_fetcher: bool,
-    pub vsc_panel_v2: bool,
+    // pub vsc_panel_v2: bool,
 }
 
 #[derive(Debug)]
@@ -236,7 +236,14 @@ impl AuthenticationManager {
             .send()
             .await
             .unwrap();
-
+        // let txt = req.text().await.unwrap();
+        // println!("{}", txt);
+        // req = reqwest::Client::new()
+        //     .get(urls::GH_AUTH_TOKEN_URL)
+        //     .send()
+        //     .await
+        //     .unwrap();
+        //
         if req.status().is_success() {
             let json = req.json::<GithubUserData>().await.unwrap();
             Ok(json)
